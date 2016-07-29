@@ -1,0 +1,249 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vm_vsCodeVM_adminUser": {
+      "defaultValue": null,
+      "type": "String"
+    },
+    "vm_vsCodeVM_adminPassword": {
+      "defaultValue": null,
+      "type": "SecureString"
+    }
+  },
+  "variables": {
+    "DockerExtensionName": "DockerExtension",
+    "vm_vsCodeVM_name": "vmDevBoxVSCode",
+    "networkInterfaces_vmNic_name": "vmDevBoxVSCodeNic",
+    "networkSecurityGroups_vmNSG_name": "vmDevBoxVSCodeNSG",
+    "publicIPAddresses_vmPublicIP_name": "vmDevBoxVSpublicIP",
+    "virtualNetworks_vmVNET_name": "vmDevBoxVSVNET",
+    "storageAccounts_vmStorage_name": "vmdevboxsstorage"
+  },
+  "resources": [
+    {
+      "comments": "My Virtual DevBox Machine",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vm_vsCodeVM_name')]",
+      "apiVersion": "2015-06-15",
+      "location": "westeurope",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_F1"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "14.04.4-LTS",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "osdisk1",
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[concat('http', '://', variables('storageAccounts_vmStorage_name'), '.blob.core.windows.net', '/vhds/osdiskdevbox.vhd')]"
+            },
+            "caching": "ReadWrite"
+          },
+          "dataDisks": []
+        },
+        "osProfile": {
+          "computerName": "[variables('vm_vsCodeVM_name')]",
+          "adminUsername": "[parameters('vm_vsCodeVM_adminUser')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": false
+          },
+          "secrets": [],
+          "adminPassword": "[parameters('vm_vsCodeVM_adminPassword')]"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_vmNic_name'))]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_vmStorage_name'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_vmNic_name'))]"
+      ]
+    },
+    {
+      "comments": "My NetworkInterface",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('networkInterfaces_vmNic_name')]",
+      "apiVersion": "2016-03-30",
+      "location": "westeurope",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "10.0.0.4",
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_vmPublicIP_name'))]"
+              },
+              "subnet": {
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworks_vmVNET_name')), '/subnets/Subnet')]"
+              }
+            }
+          }
+        ],
+        "dnsSettings": {
+          "dnsServers": []
+        },
+        "enableIPForwarding": false,
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_vmNSG_name'))]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_vmPublicIP_name'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworks_vmVNET_name'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_vmNSG_name'))]"
+      ]
+    },
+    {
+      "comments": "My NSG 22,3389 and 5050 opened for selfhost tests",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('networkSecurityGroups_vmNSG_name')]",
+      "apiVersion": "2016-03-30",
+      "location": "westeurope",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "SSH",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "XRDP",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "TestWebsite",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5050",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "My public IP address",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddresses_vmPublicIP_name')]",
+      "apiVersion": "2016-03-30",
+      "location": "westeurope",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "idleTimeoutInMinutes": 4,
+        "dnsSettings": {
+          "domainNameLabel": "devboxlinuxdomain"
+        }
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "My V´NET",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('virtualNetworks_vmVNET_name')]",
+      "apiVersion": "2016-03-30",
+      "location": "westeurope",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.0.0.0/16"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "Subnet",
+            "properties": {
+              "addressPrefix": "10.0.0.0/24"
+            }
+          }
+        ]
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "My Storage Account",
+      "type": "Microsoft.Storage/storageAccounts",
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "Storage",
+      "name": "[variables('storageAccounts_vmStorage_name')]",
+      "apiVersion": "2016-01-01",
+      "location": "westeurope",
+      "tags": {},
+      "properties": {},
+      "dependsOn": []
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vm_vsCodeVM_name'),'/', variables('DockerExtensionName'))]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vm_vsCodeVM_name'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "DockerExtension",
+        "typeHandlerVersion": "1.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {}
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vm_vsCodeVM_name'),'/newuserscript')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [ "[concat('Microsoft.Compute/virtualMachines/', variables('vm_vsCodeVM_name'))]" ],
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.5",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "https://raw.githubusercontent.com/TBD/startup.sh"
+          ],
+          "commandToExecute": "sudo sh startup.sh"
+        }
+      }
+    }
+  ]
+}
