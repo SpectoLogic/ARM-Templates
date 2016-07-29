@@ -39,9 +39,9 @@ sudo sed -i 's/BIG-REQUESTS/_IG-REQUESTS/' /usr/lib/x86_64-linux-gnu/libxcb.so.1
 # Configure for .NET Core SDK Installation
 sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
 sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
-sudo apt-get update
+sudo apt-get -y update
 # Install .NET Core SDK
-sudo apt-get install dotnet-dev-1.0.0-preview2-003121
+sudo apt-get -y install dotnet-dev-1.0.0-preview2-003121
 
 # Install NodeJS and NPM
 sudo apt-get -y install nodejs
