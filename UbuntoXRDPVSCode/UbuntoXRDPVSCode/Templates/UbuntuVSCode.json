@@ -9,6 +9,10 @@
     "vm_vsCodeVM_adminPassword": {
       "defaultValue": null,
       "type": "SecureString"
+    },
+    "net_domainName": {
+      "defaultValue": null,
+      "type": "SecureString"
     }
   },
   "variables": {
@@ -18,7 +22,8 @@
     "networkSecurityGroups_vmNSG_name": "vmDevBoxVSCodeNSG",
     "publicIPAddresses_vmPublicIP_name": "vmDevBoxVSpublicIP",
     "virtualNetworks_vmVNET_name": "vmDevBoxVSVNET",
-    "storageAccounts_vmStorage_name": "vmdevboxsstorage"
+    "storageAccounts_vmStorage_name": "vmdevboxsstorage",
+    "deployLocation" :  "westeurope"
   },
   "resources": [
     {
@@ -26,7 +31,7 @@
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vm_vsCodeVM_name')]",
       "apiVersion": "2015-06-15",
-      "location": "westeurope",
+      "location": "[variables('deployLocation')]",
       "properties": {
         "hardwareProfile": {
           "vmSize": "Standard_F1"
@@ -75,7 +80,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('networkInterfaces_vmNic_name')]",
       "apiVersion": "2016-03-30",
-      "location": "westeurope",
+      "location": "[variables('deployLocation')]",
       "properties": {
         "ipConfigurations": [
           {
@@ -111,7 +116,7 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('networkSecurityGroups_vmNSG_name')]",
       "apiVersion": "2016-03-30",
-      "location": "westeurope",
+      "location": "[variables('deployLocation')]",
       "properties": {
         "securityRules": [
           {
@@ -162,12 +167,12 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddresses_vmPublicIP_name')]",
       "apiVersion": "2016-03-30",
-      "location": "westeurope",
+      "location": "[variables('deployLocation')]",
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "idleTimeoutInMinutes": 4,
         "dnsSettings": {
-          "domainNameLabel": "devboxlinuxdomain"
+          "domainNameLabel": "[parameters('net_domainName')]"
         }
       },
       "dependsOn": []
@@ -177,7 +182,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworks_vmVNET_name')]",
       "apiVersion": "2016-03-30",
-      "location": "westeurope",
+      "location": "[variables('deployLocation')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -205,7 +210,7 @@
       "kind": "Storage",
       "name": "[variables('storageAccounts_vmStorage_name')]",
       "apiVersion": "2016-01-01",
-      "location": "westeurope",
+      "location": "[variables('deployLocation')]",
       "tags": {},
       "properties": {},
       "dependsOn": []
@@ -239,7 +244,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/TBD/startup.sh"
+            "https://raw.githubusercontent.com/SpectoLogic/ARM-Templates/master/UbuntoXRDPVSCode/UbuntoXRDPVSCode/Startup-Scripts/startup.sh"
           ],
           "commandToExecute": "sudo sh startup.sh"
         }

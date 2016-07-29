@@ -8,5 +8,8 @@
     "vm_vsCodeVM_adminPassword": {
       "value": "<YourPassword>"
     }
+    "net_domainName": {
+      "value": "spectolinux2"
+    }
   }
 }
