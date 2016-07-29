@@ -239,7 +239,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', variables('vm_vsCodeVM_name'))]",
-        "[concat('Microsoft.Compute/virtualMachines/extensions/', concat(variables('vm_vsCodeVM_name'),'/newuserscript') )]"
+        "[concat('Microsoft.Compute/virtualMachines/extensions/', concat(variables('vm_vsCodeVM_name'),'/', variables('DockerExtensionName')) )]"
       ],
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
