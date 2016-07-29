@@ -22,8 +22,9 @@
     "networkSecurityGroups_vmNSG_name": "vmDevBoxVSCodeNSG",
     "publicIPAddresses_vmPublicIP_name": "vmDevBoxVSpublicIP",
     "virtualNetworks_vmVNET_name": "vmDevBoxVSVNET",
-    "storageAccounts_vmStorage_name": "vmdevboxsstorage",
-    "deployLocation" :  "westeurope"
+    "storageAccounts_vmStorage_prefix": "vmdevstorage",
+    "storageAccounts_vmStorage_name": "\"[concat( variables('storageAccounts_vmStorage_prefix'), uniqueString(resourceGroup().id) )]\";",
+    "deployLocation": "westeurope"
   },
   "resources": [
     {
