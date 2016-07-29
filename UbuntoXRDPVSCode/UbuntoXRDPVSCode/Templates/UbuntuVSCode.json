@@ -12,7 +12,7 @@
     },
     "net_domainName": {
       "defaultValue": null,
-      "type": "SecureString"
+      "type": "String"
     }
   },
   "variables": {
