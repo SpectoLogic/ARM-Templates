@@ -52,5 +52,5 @@ sudo ln -s /usr/bin/nodejs /usr/bin/node
 sudo npm -y install -g yo
 sudo npm -y install -g generator-aspnet
 
-# Install Visual Studio Extensions
-code --install-extension ms-vscode.csharp
+# Install Visual Studio Extensions under admin user
+sudo -u $1 code --install-extension "ms-vscode.csharp"
