@@ -22,8 +22,8 @@
     "networkSecurityGroups_vmNSG_name": "vmDevBoxVSCodeNSG",
     "publicIPAddresses_vmPublicIP_name": "vmDevBoxVSpublicIP",
     "virtualNetworks_vmVNET_name": "vmDevBoxVSVNET",
-    "storageAccounts_vmStorage_prefix": "vmdevstorage",
-    "storageAccounts_vmStorage_name": "\"[concat( variables('storageAccounts_vmStorage_prefix'), uniqueString(resourceGroup().id) )]\";",
+    "storageAccounts_vmStorage_prefix": "stg",
+    "storageAccounts_vmStorage_name": "[concat( variables('storageAccounts_vmStorage_prefix'), uniqueString(resourceGroup().id) )]",
     "deployLocation": "westeurope"
   },
   "resources": [
@@ -239,7 +239,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', variables('vm_vsCodeVM_name'))]",
-        "[concat('Microsoft.Compute/virtualMachines/extensions/', concat(variables('vm_vsCodeVM_name'),'/', variables('DockerExtensionName')) )]"
+        "[resourceId('Microsoft.Compute/virtualMachines/extensions/', variables('vm_vsCodeVM_name'), variables('DockerExtensionName') )]"
       ],
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
