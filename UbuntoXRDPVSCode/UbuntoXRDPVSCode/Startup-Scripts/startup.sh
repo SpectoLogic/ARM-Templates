@@ -9,7 +9,7 @@
 # Configures:  
 #   Remote Desktop Login on port 3389
 # To run the script manually execute:
-#	wget http://<DownloadUrl>/startup.sh -O startup.sh
+#	wget https://raw.githubusercontent.com/SpectoLogic/ARM-Templates/master/UbuntoXRDPVSCode/UbuntoXRDPVSCode/Startup-Scripts/startup.sh -O startup.sh
 #	chmod +x startup.sh
 #	sudo ./startup.sh
 #  (c) by SpectoLogic 2016
