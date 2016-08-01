@@ -133,11 +133,17 @@ else
 fi
 
 # Install Visual Studio Extensions under admin user
-mkdir -p /home/$1/.vscode/extensions
+sudo mkdir -p /home/$1/.vscode/extensions
 sudo chmod 777 /home/$1/.vscode/extensions/
+sudo mkdir -p /.config/Code/User
 sudo -u $1 code --install-extension "ms-vscode.csharp" >> /home/$1/Logs/specto_vsexten_Log0.txt 2>&1
 if [ "$?" != "0" ]; then
 	echo "ERROR in sudo -u $1 code --install-extension 'ms-vscode.csharp' \n" >> /home/$1/Logs/specto_status.txt
 else
 	echo "SUCCESS for sudo -u $1 code --install-extension 'ms-vscode.csharp' \n" >> /home/$1/Logs/specto_status.txt
 fi
+# Remove that config direcory we created earlier as it makes troubles later! Just a hack for the VSCOde Extension INstallation Bug
+cd /.config/Code
+sudo rmdir User
+cd ..
+sudo rmdir Code
