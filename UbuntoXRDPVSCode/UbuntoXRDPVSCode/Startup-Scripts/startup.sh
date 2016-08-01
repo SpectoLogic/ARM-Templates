@@ -17,6 +17,7 @@
 
 mkdir /home/$1/Logs
 sudo chmod 777 /home/$1/Logs
+
 # Ensure machine is up to date 
 sudo apt-get update	>> /home/$1/Logs/specto_update_Log0.txt 2>&1
 if [ "$?" != "0" ]; then
@@ -31,12 +32,12 @@ else
 	echo "SUCCESS for sudo apt-get -f -y install \n" >> /home/$1/Logs/specto_status.txt
 fi
 
-sudo apt-get clean
-
 # Install Desktop and XRDP
 sudo apt-get -y install ubuntu-desktop >> /home/$1/Logs/specto_xrdp_Log0.txt 2>&1
 if [ "$?" != "0" ]; then
 	echo "ERROR in sudo apt-get -y install ubuntu-desktop \n" >> /home/$1/Logs/specto_status.txt
+	#Remove annoying crash message altough it would be better to fix this
+	sudo rm /var/crash/*
 else
 	echo "SUCCESS for sudo apt-get -y install ubuntu-desktop \n" >> /home/$1/Logs/specto_status.txt
 fi
@@ -135,15 +136,28 @@ fi
 # Install Visual Studio Extensions under admin user
 sudo mkdir -p /home/$1/.vscode/extensions
 sudo chmod 777 /home/$1/.vscode/extensions/
-sudo mkdir -p /.config/Code/User
-sudo -u $1 code --install-extension "ms-vscode.csharp" >> /home/$1/Logs/specto_vsexten_Log0.txt 2>&1
+sudo mkdir -p /home/$1/.config/Code/User
+sudo chmod 777 /home/$1/.config/Code
+sudo chmod 777 /home/$1/.config/Code/User
+sudo -i -E -u $1 code --install-extension "ms-vscode.csharp" >> /home/$1/Logs/specto_vsexten_Log0.txt 2>&1
 if [ "$?" != "0" ]; then
 	echo "ERROR in sudo -u $1 code --install-extension 'ms-vscode.csharp' \n" >> /home/$1/Logs/specto_status.txt
 else
 	echo "SUCCESS for sudo -u $1 code --install-extension 'ms-vscode.csharp' \n" >> /home/$1/Logs/specto_status.txt
 fi
 # Remove that config direcory we created earlier as it makes troubles later! Just a hack for the VSCOde Extension INstallation Bug
-cd /.config/Code
+cd /home/$1/.config/Code/
 sudo rmdir User
 cd ..
 sudo rmdir Code
+# Hack prevent that system error box. This appears because it could not install a packacke dictionaries-common. 
+# sudo rm /var/crash/*
+# sudo apt-get -y upgrade 
+
+# Try to fix the problem with an upgrade
+sudo apt-get -y clean
+
+exit 0 
+
+
+
