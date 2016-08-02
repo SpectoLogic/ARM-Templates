@@ -1,7 +1,7 @@
 
 # ARM Ubunto with VSCode and ASP.NET Core
 
-<p style="color:red">NOT YET COMPLETLY STABLE / TESTED ! - Use at own risk!</p>
+<p style="color:red">Not yet completly stable! - Use at own risk!</p>
 
 This ARM Templates creates a linux Ubuntu machine configured with Visual Studio Code 
 and ASP.NET Core which <b>can be used with Remote Desktop</b> from your PC. 
@@ -24,6 +24,5 @@ The template is based the <a href="https://github.com/Azure/azure-quickstart-tem
 </a>
 
 ### Known Issues
-- Ubuntu Desktop presents an system error that can be reported!
-- Logfile /home/(user)/specto_status.txt shows ERROR installing ubuntu-desktop package! Check log specto_xrdp_Log0.txt for details. Hints are appreciated! 
-- Sometimes the XRDP does not install correctly. Have not yet narrowed down the issue!
+- Ubuntu Desktop installation has error with the component "dictionaries" and this presents a system error that startup, which seems to have no impact on the functionality of VSCode,... (Details can be found after the installation in the directory /var/crash )!
+- Sometimes the XRDP with xfce does not install/configure correctly. This prevents logging on with remote desktop presenting the error: "Unable to load a failsafe session". As possible causes it is listing xconfd not running (D-Bus setup issue) or environment variable $XD_CONFIG_DIRS. However i tried all sorts of presented fixes of online communities, but nothing worked! I even removed all ubuntu desktop, dbus, xfce components and have reinstalled everything with no success. Any hints of an ubuntu pro are appreciated.

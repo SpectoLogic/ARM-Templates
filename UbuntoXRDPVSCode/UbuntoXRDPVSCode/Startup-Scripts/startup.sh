@@ -13,10 +13,11 @@
 #	chmod +x startup.sh
 #	sudo ./startup.sh
 #  (c) by SpectoLogic 2016
-#  Version: 0.1 
+#  Version: 0.2 
 
+# Add Logs Directory to write Logs to
 mkdir /home/$1/Logs
-sudo chmod 777 /home/$1/Logs
+sudo chmod 666 /home/$1/Logs
 
 # Ensure machine is up to date 
 sudo apt-get update	>> /home/$1/Logs/specto_update_Log0.txt 2>&1
@@ -36,8 +37,9 @@ fi
 sudo apt-get -y install ubuntu-desktop >> /home/$1/Logs/specto_xrdp_Log0.txt 2>&1
 if [ "$?" != "0" ]; then
 	echo "ERROR in sudo apt-get -y install ubuntu-desktop \n" >> /home/$1/Logs/specto_status.txt
-	#Remove annoying crash message altough it would be better to fix this
-	sudo rm /var/crash/*
+	# TODO: We always land here because of the "dictionaries" error. See /var/crash/ for details.
+	# Remove annoying crash message altough it would be better to fix this
+	# sudo rm /var/crash/*
 else
 	echo "SUCCESS for sudo apt-get -y install ubuntu-desktop \n" >> /home/$1/Logs/specto_status.txt
 fi
@@ -54,9 +56,9 @@ else
 	echo "SUCCESS for sudo apt-get -y install xubuntu-desktop \n" >> /home/$1/Logs/specto_status.txt
 fi
 
-# Configure XRDP
+# Configure XRDP with xfce 
 sudo echo xfce4-session >~/.xsession
-# Add line xfce4-session before the line /etc/X11/Xsession.  
+# Add line xfce4-session before the line /etc/X11/Xsession in startwm.sh file.  
 sudo sed -i 's/\. \/etc\/X11\/Xsession/xfce4-session\n. \/etc\/X11\/Xsession/' /etc/xrdp/startwm.sh
 sudo service xrdp restart
 if [ "$?" != "0" ]; then
@@ -78,7 +80,7 @@ if [ "$?" != "0" ]; then
 else
 	echo "SUCCESS for sudo dpkg -i code.deb \n" >> /home/$1/Logs/specto_status.txt
 fi
-# Fix "Bug" with Gnome Desktop and XRDP
+# Fix (HACK) a Visual Code "Bug" with Gnome Desktop and XRDP (Why is everything related to Linux forcing you to use hacks instead of real solution? *eyeroll*)
 sudo sed -i 's/BIG-REQUESTS/_IG-REQUESTS/' /usr/lib/x86_64-linux-gnu/libxcb.so.1
 
 # Configure for .NET Core SDK Installation
@@ -117,7 +119,6 @@ if [ "$?" != "0" ]; then
 else
 	echo "SUCCESS for sudo ln -s /usr/bin/nodejs /usr/bin/node \n" >> /home/$1/Logs/specto_status.txt
 fi
-#sudo apt-get -y install npm 
 
 # Install Yeoman + ASP.NET Core Generator
 sudo npm -y install -g yo >> /home/$1/Logs/specto_yeoman_Log0.txt 2>&1
@@ -134,6 +135,7 @@ else
 fi
 
 # Install Visual Studio Extensions under admin user
+# again some hacks to make code --install-extension work *sighs*
 sudo mkdir -p /home/$1/.vscode/extensions
 sudo chmod 777 /home/$1/.vscode/extensions/
 sudo mkdir -p /home/$1/.config/Code/User
@@ -145,19 +147,14 @@ if [ "$?" != "0" ]; then
 else
 	echo "SUCCESS for sudo -u $1 code --install-extension 'ms-vscode.csharp' \n" >> /home/$1/Logs/specto_status.txt
 fi
-# Remove that config direcory we created earlier as it makes troubles later! Just a hack for the VSCOde Extension INstallation Bug
+# Remove that config direcory we created earlier as it makes troubles later! Just another hack for the VSCOde Extension Installation Bug
 cd /home/$1/.config/Code/
 sudo rmdir User
 cd ..
 sudo rmdir Code
-# Hack prevent that system error box. This appears because it could not install a packacke dictionaries-common. 
-# sudo rm /var/crash/*
-# sudo apt-get -y upgrade 
 
 # Try to fix the problem with an upgrade
+# sudo apt-get -y upgrade 
 sudo apt-get -y clean
 
-exit 0 
-
-
-
+exit 0
