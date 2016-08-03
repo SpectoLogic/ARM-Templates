@@ -222,8 +222,8 @@ else
 fi
 # Show default setup for desktop 
 echo "Fixing TAB behaviour..." >> /home/$1/Logs/specto_status.txt
-cd ~/.config/xfce4/xfconf/xfce-perchannel-xml
-sudo sed -i 's/<property name\=\"\&lt\;Super\&gt\;Tab\" type\=\"string\" value\=\"switch_window_key\"\/>//' xfce4-keyboard-shortcuts.xml
+chmod 664 /home/$1/xfce4-keyboard-shortcuts.xml
+mv /home/$1/xfce4-keyboard-shortcuts.xml /home/$1/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 
 # Try to fix the problem with an upgrade
 # sudo apt-get -y upgrade 
