@@ -1,8 +1,6 @@
 
 # ARM Ubunto with VSCode and ASP.NET Core
 
-<p style="color:red">Not yet completly tested! - Use at own risk!</p>
-
 This ARM Templates creates a linux Ubuntu machine configured with Visual Studio Code 
 and ASP.NET Core which <b>can be used with Remote Desktop</b> from your PC. 
 The template is based the <a href="https://github.com/Azure/azure-quickstart-templates/tree/master/docker-simple-on-ubuntu">Ubunto-Simple template</a> from Corey Sanders.
