@@ -7,7 +7,7 @@ The template is based the <a href="https://github.com/Azure/azure-quickstart-tem
 
 ## Features  
 - Docker (from Docker Extension)
-- Ubuntu Desktop with XRDP and xfce4 
+- Ubuntu Desktop with XRDP and xfce4 (Full or Minimal) 
 - Visual Studio Code
 - .NET Core SDK
 - NodeJS and NPM v6
@@ -20,4 +20,13 @@ The template is based the <a href="https://github.com/Azure/azure-quickstart-tem
 <a href="http://armviz.io/#/?load=https:%2F%2Fraw.githubusercontent.com%2FSpectoLogic%2FARM-Templates%2Fmaster%2FUbuntoXRDPVSCode%2FUbuntoXRDPVSCode%2FTemplates%2Fazuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
+
+## Parameters
+
+The template requires following parameter: 
+- <b>vm_vsCodeVM_adminUser</b>: Your admin username NOT admin, Administrator,...
+- <b>vm_vsCodeVM_adminPassword</b>: Password
+- <b>net_domainName</b>: Domainname to reach machine at 
+   <br />domainname.resource-group-location.cloudapp.azure.com. <br />Example: <b>mytest</b>.westeurope.cloudapp.azure.com
+- <b>ubunto_desktop</b>: true = Full Desktop, false = Minimum Desktop
 
