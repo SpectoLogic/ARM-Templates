@@ -162,6 +162,15 @@ fi
 #	echo "SUCCESSFULLY executed sudo ln -s /usr/bin/nodejs /usr/bin/node" >> /home/$1/Logs/specto_status.txt
 #fi
 
+#Install Bower Package Manager
+echo "Installing Bower Package Manager..." >> /home/$1/Logs/specto_status.txt
+sudo npm -y install -g bower
+if [ "$?" != "0" ]; then
+	echo "	FAILED to execute sudo npm -y install -g bower" >> /home/$1/Logs/specto_status.txt
+else
+	echo "	SUCCESSFULLY executed sudo npm -y install -g bower" >> /home/$1/Logs/specto_status.txt
+fi
+
 # Install Yeoman + ASP.NET Core Generator
 echo "Installing Yeoman (specto_yeoman_Log0.txt)..." >> /home/$1/Logs/specto_status.txt
 sudo npm -y install -g yo >> /home/$1/Logs/specto_yeoman_Log0.txt 2>&1
@@ -206,6 +215,8 @@ else
 	sudo apt-get -y install gnome-icon-theme
 	echo "Installing Firefox package instead of full Desktop..." >> /home/$1/Logs/specto_status.txt
 	sudo apt-get -y install firefox
+	echo "Installing XDGUtils package instead of full Desktop..." >> /home/$1/Logs/specto_status.txt
+	sudo apt-get -y install xdg-utils
 fi
 
 # Install Visual Studio Extensions under admin user
