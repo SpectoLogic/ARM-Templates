@@ -20,7 +20,7 @@
       "defaultValue": null,
       "type": "String",
       "metadata": {
-        "description": "Domainname to reach machine at <domain>.<resourcegroup location>.cloudapp.azure.com"
+        "description": "Domainname to reach machine at domainname.resource-group-location.cloudapp.azure.com. Example: mytest.westeurope.cloudapp.azure.com "
       }
     },
     "ubunto_desktop": {
