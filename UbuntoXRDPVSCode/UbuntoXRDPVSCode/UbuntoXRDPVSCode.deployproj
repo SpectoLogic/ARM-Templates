@@ -33,11 +33,12 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Scripts\Deploy-AzureResourceGroup.ps1" />
+    <None Include="metadata.json" />
     <None Include="ReadMe.md" />
     <None Include="Startup-Scripts\install.sh" />
     <None Include="Startup-Scripts\startup.sh" />
-    <None Include="Templates\UbuntuVSCode.json" />
-    <None Include="Templates\UbuntuVSCode.parameters.json" />
+    <None Include="Templates\azuredeploy.json" />
+    <None Include="Templates\azuredeploy.parameters.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

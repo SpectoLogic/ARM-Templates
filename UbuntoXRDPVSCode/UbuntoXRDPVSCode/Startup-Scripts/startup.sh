@@ -9,4 +9,6 @@ echo "	See Logs/specto_status.txt for deails!" >> /home/$1/progress.txt
 sudo -i -E -u $1 sh /home/$1/install.sh $1 $2
 echo "Completed install.sh script." >> /home/$1/progress.txt
 rm -f install.sh
+sudo rm -f /home/$1/xfce4-keyboard-shortcuts.xml
+sudo rm -f /home/$1/install.sh
 exit 0

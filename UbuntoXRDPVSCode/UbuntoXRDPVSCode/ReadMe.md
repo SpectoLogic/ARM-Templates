@@ -14,10 +14,10 @@ The template is based the <a href="https://github.com/Azure/azure-quickstart-tem
 - Yeoman with ASP.NET Generator
 - C# Extension for Visual Studio Code
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https:%2F%2Fraw.githubusercontent.com%2FSpectoLogic%2FARM-Templates%2Fmaster%2FUbuntoXRDPVSCode%2FUbuntoXRDPVSCode%2FTemplates%2FUbuntuVSCode.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https:%2F%2Fraw.githubusercontent.com%2FSpectoLogic%2FARM-Templates%2Fmaster%2FUbuntoXRDPVSCode%2FUbuntoXRDPVSCode%2FTemplates%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
-<a href="http://armviz.io/#/?load=https:%2F%2Fraw.githubusercontent.com%2FSpectoLogic%2FARM-Templates%2Fmaster%2FUbuntoXRDPVSCode%2FUbuntoXRDPVSCode%2FTemplates%2FUbuntuVSCode.json" target="_blank">
+<a href="http://armviz.io/#/?load=https:%2F%2Fraw.githubusercontent.com%2FSpectoLogic%2FARM-Templates%2Fmaster%2FUbuntoXRDPVSCode%2FUbuntoXRDPVSCode%2FTemplates%2Fazuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 

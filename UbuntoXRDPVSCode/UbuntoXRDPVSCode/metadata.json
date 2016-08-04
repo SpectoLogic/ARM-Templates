@@ -1,0 +1,7 @@
+﻿{
+  "itemDisplayName": "Create a Ubuntu Devbox with Visual Studio Code and RDP",
+  "description": "This template creates a ubunto developer box with VSCode, RDP, Docker, ASP.NET Core, Yeoman ASP.NET Generator, C#Extension,NodeJS and NPM v6 ",
+  "summary": "Create a Ubunto Devbox with VSCode",
+  "githubUsername": "spectologic",
+  "dateUpdated": "2016-08-04"
+}

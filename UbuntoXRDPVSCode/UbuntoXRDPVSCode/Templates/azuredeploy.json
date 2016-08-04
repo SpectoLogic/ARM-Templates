@@ -4,19 +4,31 @@
   "parameters": {
     "vm_vsCodeVM_adminUser": {
       "defaultValue": null,
-      "type": "String"
+      "type": "String",
+      "metadata": {
+        "description": "Name of the new admin user!"
+      }
     },
     "vm_vsCodeVM_adminPassword": {
       "defaultValue": null,
-      "type": "SecureString"
+      "type": "SecureString",
+      "metadata": {
+        "description": "Password of the new admin user!"
+      }
     },
     "net_domainName": {
       "defaultValue": null,
-      "type": "String"
+      "type": "String",
+      "metadata": {
+        "description": "Domainname to reach machine at <domain>.<resourcegroup location>.cloudapp.azure.com"
+      }
     },
     "ubunto_desktop": {
       "defaultValue": false,
-      "type": "bool"
+      "type": "bool",
+      "metadata": {
+        "description": "Install full ubuntu desktop?"
+      }
     }
   },
   "variables": {
@@ -28,7 +40,7 @@
     "virtualNetworks_vmVNET_name": "vmDevBoxVSVNET",
     "storageAccounts_vmStorage_prefix": "stg",
     "storageAccounts_vmStorage_name": "[concat( variables('storageAccounts_vmStorage_prefix'), uniqueString(resourceGroup().id) )]",
-    "deployLocation": "westeurope"
+    "deployLocation": "[resourceGroup().location]"
   },
   "resources": [
     {

@@ -8,12 +8,20 @@
 #   Yeoman and ASP.NET Core Generator 
 # Configures:  
 #   Remote Desktop Login on port 3389
-# To run the script manually execute:
-#	wget https://raw.githubusercontent.com/SpectoLogic/ARM-Templates/master/UbuntoXRDPVSCode/UbuntoXRDPVSCode/Startup-Scripts/startup.sh -O startup.sh
-#	chmod +x startup.sh
-#	./startup.sh <string userName> <bool install ubuntu desktop>
-#  (c) by SpectoLogic 2016
-#  Version: 0.2 
+#########################################################################################################	
+#	Version:	1.0 
+#	Author:		Andreas Pollak, (c) by SpectoLogic (R) 2016
+#   Parameter:
+#		userName		admin user name for the machine
+#		bUbuntuDesktop	true or false, depending if you want a full Ubuntu Desktop
+#	Examples:
+#		manual execution:
+#			cd ~/
+#			wget https://raw.githubusercontent.com/SpectoLogic/ARM-Templates/master/UbuntoXRDPVSCode/UbuntoXRDPVSCode/Config-Files/xfce4-keyboard-shortcuts.xml - O xfce4-keyboard-shortcuts.xml
+#			wget https://raw.githubusercontent.com/SpectoLogic/ARM-Templates/master/UbuntoXRDPVSCode/UbuntoXRDPVSCode/Startup-Scripts/install.sh -O startup.sh
+#			chmod +x startup.sh
+#			./startup.sh $USER <bool install ubuntu desktop>
+#########################################################################################################	
 
 # Add Logs Directory to write Logs to
 mkdir /home/$1/Logs
@@ -192,6 +200,8 @@ if [ "$2" == "true" ]; then
 	fi
 else
 	echo "NOT installing Ubuntu Desktop as requested..." >> /home/$1/Logs/specto_status.txt
+	echo "Installing required libgconf-2-4 package instead..." >> /home/$1/Logs/specto_status.txt
+	sudo apt-get -y install libgconf-2-4
 fi
 
 # Install Visual Studio Extensions under admin user
