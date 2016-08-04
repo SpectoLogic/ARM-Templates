@@ -7,9 +7,12 @@
     },
     "vm_vsCodeVM_adminPassword": {
       "value": "<YourPassword>"
-    }
+    },
     "net_domainName": {
       "value": "spectolinux2"
+    },
+    "ubunto_desktop": {
+      "value": "false"
     }
   }
 }

@@ -11,7 +11,7 @@
 # To run the script manually execute:
 #	wget https://raw.githubusercontent.com/SpectoLogic/ARM-Templates/master/UbuntoXRDPVSCode/UbuntoXRDPVSCode/Startup-Scripts/startup.sh -O startup.sh
 #	chmod +x startup.sh
-#	sudo ./startup.sh
+#	./startup.sh <string userName> <bool install ubuntu desktop>
 #  (c) by SpectoLogic 2016
 #  Version: 0.2 
 
@@ -170,25 +170,28 @@ else
 	echo "	SUCCESSFULLY executed sudo npm -y install -g generator-aspnet" >> /home/$1/Logs/specto_status.txt
 fi
 
-# Install Desktop and XRDP
-echo "Installing Ubuntu XDesktop (specto_ubuntudsktop_Log0.txt)..." >> /home/$1/Logs/specto_status.txt
-sudo apt-get -y install xubuntu-desktop  >> /home/$1/Logs/specto_ubuntudsktop_Log0.txt 2>&1
-if [ "$?" != "0" ]; then
-	echo "	FAILED to execute sudo apt-get -y install xubuntu-desktop" >> /home/$1/Logs/specto_status.txt
+# Install Desktop
+if [ "$2" == "true" ]; then
+	echo "Installing Ubuntu Desktop (specto_ubuntudsktop_Log1.txt)..." >> /home/$1/Logs/specto_status.txt
+	sudo apt-get -y install ubuntu-desktop >> /home/$1/Logs/specto_ubuntudsktop_Log1.txt 2>&1
+	if [ "$?" != "0" ]; then
+		echo "	FAILED to execute sudo apt-get -y install ubuntu-desktop" >> /home/$1/Logs/specto_status.txt
+		# TODO: We always land here because of the "dictionaries" error. See /var/crash/ for details.
+		# Remove annoying crash message altough it would be better to fix this
+		# sudo rm /var/crash/*
+	else
+		echo "	SUCCESSFULLY executed sudo apt-get -y install ubuntu-desktop" >> /home/$1/Logs/specto_status.txt
+	fi
+	# Install XDesktop
+	echo "Installing Ubuntu XDesktop (specto_ubuntudsktop_Log0.txt)..." >> /home/$1/Logs/specto_status.txt
+	sudo apt-get -y install xubuntu-desktop  >> /home/$1/Logs/specto_ubuntudsktop_Log0.txt 2>&1
+	if [ "$?" != "0" ]; then
+		echo "	FAILED to execute sudo apt-get -y install xubuntu-desktop" >> /home/$1/Logs/specto_status.txt
+	else
+		echo "	SUCCESSFULLY executed sudo apt-get -y install xubuntu-desktop" >> /home/$1/Logs/specto_status.txt
+	fi
 else
-	echo "	SUCCESSFULLY executed sudo apt-get -y install xubuntu-desktop" >> /home/$1/Logs/specto_status.txt
-fi
-
-# Install Desktop and XRDP
-echo "Installing Ubuntu Desktop (specto_ubuntudsktop_Log1.txt)..." >> /home/$1/Logs/specto_status.txt
-sudo apt-get -y install ubuntu-desktop >> /home/$1/Logs/specto_ubuntudsktop_Log1.txt 2>&1
-if [ "$?" != "0" ]; then
-	echo "	FAILED to execute sudo apt-get -y install ubuntu-desktop" >> /home/$1/Logs/specto_status.txt
-	# TODO: We always land here because of the "dictionaries" error. See /var/crash/ for details.
-	# Remove annoying crash message altough it would be better to fix this
-	# sudo rm /var/crash/*
-else
-	echo "	SUCCESSFULLY executed sudo apt-get -y install ubuntu-desktop" >> /home/$1/Logs/specto_status.txt
+	echo "NOT installing Ubuntu Desktop as requested..." >> /home/$1/Logs/specto_status.txt
 fi
 
 # Install Visual Studio Extensions under admin user
@@ -212,7 +215,7 @@ sudo -i -E -u $1 rmdir User
 cd ..
 sudo -i -E -u $1 rmdir Code
 
-# Show default setup for desktop 
+# Configure default setup for desktop 
 echo "Setting up default desktop..." >> /home/$1/Logs/specto_status.txt
 cp -r /etc/xdg/xfce4 ~/.config/xfce4
 if [ "$?" != "0" ]; then
@@ -225,8 +228,7 @@ echo "Fixing TAB behaviour..." >> /home/$1/Logs/specto_status.txt
 chmod 664 /home/$1/xfce4-keyboard-shortcuts.xml
 mv /home/$1/xfce4-keyboard-shortcuts.xml /home/$1/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 
-# Try to fix the problem with an upgrade
-# sudo apt-get -y upgrade 
-# sudo apt-get -y clean
+# Upgrade the machine
+sudo apt-get -y upgrade 
 
 exit 0

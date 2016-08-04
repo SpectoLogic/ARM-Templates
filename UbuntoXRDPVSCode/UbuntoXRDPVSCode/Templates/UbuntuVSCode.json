@@ -13,6 +13,10 @@
     "net_domainName": {
       "defaultValue": null,
       "type": "String"
+    },
+    "ubunto_desktop": {
+      "defaultValue": false,
+      "type": "bool"
     }
   },
   "variables": {
@@ -252,7 +256,7 @@
             "https://raw.githubusercontent.com/SpectoLogic/ARM-Templates/master/UbuntoXRDPVSCode/UbuntoXRDPVSCode/Startup-Scripts/install.sh",
             "https://raw.githubusercontent.com/SpectoLogic/ARM-Templates/master/UbuntoXRDPVSCode/UbuntoXRDPVSCode/Config-Files/xfce4-keyboard-shortcuts.xml"
           ],
-          "commandToExecute": "[concat('sudo sh startup.sh',' ',parameters('vm_vsCodeVM_adminUser'))]"
+          "commandToExecute": "[concat('sudo sh startup.sh',' ',parameters('vm_vsCodeVM_adminUser'),' ',parameters('ubunto_desktop'))]"
         }
       }
     }
