@@ -203,7 +203,7 @@ else
 	echo "Installing required libgconf-2-4 package instead of full Desktop..." >> /home/$1/Logs/specto_status.txt
 	sudo apt-get -y install libgconf-2-4
 	echo "Installing required gnome-icon-theme package instead of full Desktop..." >> /home/$1/Logs/specto_status.txt
-	sudo apt-get install gnome-icon-theme
+	sudo apt-get -y install gnome-icon-theme
 fi
 
 # Install Visual Studio Extensions under admin user
